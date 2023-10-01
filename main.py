@@ -1,5 +1,6 @@
 import speech_recognition as sr
 
+
 # # obtain audio from the microphone
 # r = sr.Recognizer()
 #
@@ -20,29 +21,63 @@ import speech_recognition as sr
 #     print("Sphinx error; {0}".format(e))
 
 
+def startApp(app):
+    print("Welcome to the app")
+
+    loop = True
+
+    while loop:
+        print("Please choose a command:")
+        print("1: View current input device")
+        print("2: Change input device")
+        print("x: Exit application")
+        command = input("::")
+
+        if command == "1":
+            print(app.getMicName())
+
+        if command == "2":
+            app.setMic(None)
+
+        if command == "x":
+            loop = False
+
+        # app.setMic(None)
+
+
 class ProgramLoop:
+
     def __init__(self):
-        self.mic = None
+        self.mic_name = sr.Microphone.list_microphone_names()[0]
+        self.mic_obj = sr.Microphone()
 
-    # Returns the current mic
-    def getMic(self):
-        # # Get microphones list
-        # mic_arr = sr.Microphone.list_microphone_names()
-        # # print(mic_arr[1])
-        # mic = sr.Microphone(device_index=1)
-        print('getting mic..')
+    # Returns the name of the current mic
+    def getMicName(self):
+        return self.mic_name
 
-    # Sets the current mic from system list
-    def setMic(self):
+    def getMicObj(self):
+        return self.mic_obj
+
+    # Sets the current mic from system list (optional index param)
+    def setMic(self, index):
         mic_arr = sr.Microphone.list_microphone_names()
-        for mic in mic_arr:
-            print(mic)
-        mic = sr.Microphone(device_index=1)
+        if index is not None:
+            mic_obj = sr.Microphone(device_index=index)
+            self.mic_name = mic_arr[index]
+            self.mic_obj = mic_obj
+
+        else:
+            for i in range(len(mic_arr)):
+                print(i, mic_arr[i])
+            val = input("Select an input device from the list...")
+            index = int(val)
+            mic_obj = sr.Microphone(device_index=index)
+            self.mic_name = mic_arr[index]
+            self.mic_obj = mic_obj
 
 
-
-
-
-loop = ProgramLoop()
-loop.getMic()
-loop.setMic()
+if __name__ == "__main__":
+    loopFlag = True
+    app = ProgramLoop()
+    if loopFlag:
+        startApp(app)
