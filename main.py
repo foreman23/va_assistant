@@ -3,20 +3,23 @@ import pyttsx3
 
 
 def startApp(app):
-    print("Welcome to the app")
+    print("Virtual Assistant!")
+    print("By: foreman23\n")
 
-    loop = True
     # Init TTS engine
     engine = pyttsx3.init()
 
+    print("help: Get list of commands\n")
+    print("1: View current input device")
+    print("2: Change input device")
+    print("3: Record voice")
+    print("4: Get last voice prompt\n")
+    print("exit: Exit application\n")
+
+    loop = True
+
     while loop:
-        print("Please choose a command:")
-        print("1: View current input device")
-        print("2: Change input device")
-        print("3: Record voice")
-        print("4: Get last voice prompt")
-        print("x: Exit application")
-        command = input("::")
+        command = input("$  ")
 
         if command == "1":
             print(app.getMicName())
@@ -32,7 +35,17 @@ def startApp(app):
             engine.say(app.getPrompt())
             engine.runAndWait()
 
-        if command == "x":
+        if command == "help":
+            print("\nhelp: Get list of commands\n")
+            print("1: View current input device")
+            print("2: Change input device")
+            print("3: Record voice")
+            print("4: Get last voice prompt\n")
+            print("exit: Exit application\n")
+
+        if command == "exit":
+            engine.say("Goodbye")
+            engine.runAndWait()
             loop = False
 
 
