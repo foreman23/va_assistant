@@ -1,10 +1,13 @@
 import speech_recognition as sr
+import pyttsx3
 
 
 def startApp(app):
     print("Welcome to the app")
 
     loop = True
+    # Init TTS engine
+    engine = pyttsx3.init()
 
     while loop:
         print("Please choose a command:")
@@ -26,6 +29,8 @@ def startApp(app):
 
         if command == "4":
             print(app.getPrompt())
+            engine.say(app.getPrompt())
+            engine.runAndWait()
 
         if command == "x":
             loop = False
@@ -34,7 +39,7 @@ def startApp(app):
 class ProgramLoop:
 
     def __init__(self):
-        self.mic_name = sr.Microphone.list_microphone_names()[1]
+        self.mic_name = sr.Microphone.list_microphone_names()[4]  # **CHANGE THIS LATER (THIS IS THE DEFAULT FOR ARCTIS)
         self.mic_obj = sr.Microphone()
         self.prompt = None
 
@@ -52,7 +57,7 @@ class ProgramLoop:
 
     def getPrompt(self):
         """
-        Returns the current prompt
+        Returns the most recent prompt
         """
         return self.prompt
 
@@ -76,6 +81,9 @@ class ProgramLoop:
             self.mic_obj = mic_obj
 
     def recordPrompt(self):
+        """
+        Records speech from mic and sets prompt
+        """
         r = sr.Recognizer()
 
         with self.mic_obj as source:
