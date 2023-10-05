@@ -9,7 +9,7 @@ class ProgramLoop:
 
     def __init__(self):
         self.mic_name = sr.Microphone.list_microphone_names()[int(config['main']['micindex'])]
-        self.mic_obj = sr.Microphone()
+        self.mic_obj = sr.Microphone(device_index=int(config['main']['micindex']))
         self.prompt = None
 
     def getMicName(self):
@@ -30,24 +30,22 @@ class ProgramLoop:
         """
         return self.prompt
 
-    def setMic(self, index):
+    def setMic(self):
         """
         Sets the current mic from system list (optional index param)
         """
         mic_arr = sr.Microphone.list_microphone_names()
-        if index is not None:
-            mic_obj = sr.Microphone(device_index=index)
-            self.mic_name = mic_arr[index]
-            self.mic_obj = mic_obj
+        for i in range(len(mic_arr)):
+            print(i, mic_arr[i])
+        val = input("Select an input device from the list...")
+        index = int(val)
+        mic_obj = sr.Microphone(device_index=index)
 
-        else:
-            for i in range(len(mic_arr)):
-                print(i, mic_arr[i])
-            val = input("Select an input device from the list...")
-            index = int(val)
-            mic_obj = sr.Microphone(device_index=index)
-            self.mic_name = mic_arr[index]
-            self.mic_obj = mic_obj
+        self.mic_name = mic_arr[index]
+        self.mic_obj = mic_obj
+        config['main']['micindex'] = str(index)
+        with open('settings.ini', 'w') as configfile:
+            config.write(configfile)
 
     def recordPrompt(self):
         """

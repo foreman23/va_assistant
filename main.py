@@ -26,7 +26,7 @@ def startApp(app):
             print(app.getMicName())
 
         if command == "2":
-            app.setMic(None)
+            app.setMic()
 
         if command == "3":
             app.recordPrompt()
