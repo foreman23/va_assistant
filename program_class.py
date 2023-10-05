@@ -1,10 +1,14 @@
 import speech_recognition as sr
+import configparser
+
+config = configparser.ConfigParser()
+config.read('settings.ini')
 
 
 class ProgramLoop:
 
     def __init__(self):
-        self.mic_name = sr.Microphone.list_microphone_names()[4]  # **CHANGE THIS LATER (THIS IS THE DEFAULT FOR ARCTIS)
+        self.mic_name = sr.Microphone.list_microphone_names()[int(config['main']['micindex'])]
         self.mic_obj = sr.Microphone()
         self.prompt = None
 
